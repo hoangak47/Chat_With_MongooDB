@@ -1,0 +1,19 @@
+.limit-username {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    display: -webkit-box;
+    overflow: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
+.chat {
+    overflow-anchor: none;
+}
+
+#info:checked ~ .info {
+    display: block;
+}
