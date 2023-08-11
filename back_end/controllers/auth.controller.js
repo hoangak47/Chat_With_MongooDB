@@ -161,12 +161,11 @@ const auth = {
 
       const refreshToken = await auth.generateRefreshToken(user);
 
-      console.log(refreshToken);
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         path: "/",
         secure: true,
-        sameSite: "strict",
+        sameSite: "none",
       });
 
       const { password: hashedPassword, ...others } = user._doc;
