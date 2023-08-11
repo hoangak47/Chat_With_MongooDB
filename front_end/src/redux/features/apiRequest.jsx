@@ -57,6 +57,7 @@ export const logoutRequest = async (user, dispatch, axios, navigate) => {
                 token: `Bearer ${user.accessToken}`,
                 _id: user._id,
             },
+            withCredentials: true,
         });
         dispatch(setAuth(false));
         dispatch(logoutSuccess());
@@ -89,6 +90,7 @@ export const getRoomsRequest = async (user, dispatch, axios, navigate) => {
             headers: {
                 token: `Bearer ${user.accessToken}`,
             },
+            withCredentials: true,
         });
         if (response.data.length === 0) {
             dispatch(getRoomsFail([]));
@@ -115,6 +117,7 @@ export const getChatRequest = async (user, dispatch, axios, id, page = 1, chat) 
                 token: `Bearer ${user.accessToken}`,
                 _id: user._id,
             },
+            withCredentials: true,
         });
 
         if (response.data.length === 0) {
@@ -145,6 +148,7 @@ export const sendMessageRequest = async (user, dispatch, data, id, axios) => {
                 token: `Bearer ${user.accessToken}`,
                 _id: user._id,
             },
+            withCredentials: true,
         });
         dispatch(sendMessageSuccess());
     } catch (error) {
@@ -162,6 +166,7 @@ export const getProlifeRequest = async (_id, user_id, accessToken, axios, dispat
                 token: `Bearer ${accessToken}`,
                 _id: user_id,
             },
+            withCredentials: true,
         });
         dispatch(setProfileSuccess(response.data));
     } catch (error) {
@@ -177,6 +182,7 @@ export const changePasswordRequest = async (user, accessToken, dispatch, data, a
                 token: `Bearer ${accessToken}`,
                 _id: user._id,
             },
+            withCredentials: true,
         });
         dispatch(setChangePasswordSuccess());
         message.success('Change password success');
@@ -195,6 +201,7 @@ export const searchUserRequest = async (user, dispatch, data, axios) => {
                 token: `Bearer ${user.accessToken}`,
                 _id: user._id,
             },
+            withCredentials: true,
         });
         console.log(response.data);
         dispatch(getSearchSuccess(response.data));
@@ -216,6 +223,7 @@ export const uploadImageRoomRequest = async (user, room, roomActive, dispatch, d
                     token: `Bearer ${user.accessToken}`,
                     _id: user._id,
                 },
+                withCredentials: true,
             },
         );
 

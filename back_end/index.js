@@ -14,10 +14,8 @@ const { Server } = require("socket.io");
 
 const io = new Server(server, {
   cors: {
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
     origin: true,
-    exposedHeaders: ["set-cookie"],
   },
 });
 
@@ -25,9 +23,8 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["https://www.thecaovn.space", "http://localhost:3000"],
+    origin: true,
     credentials: true,
-    exposedHeaders: ["set-cookie"],
   })
 );
 
@@ -35,16 +32,6 @@ app.use(cookieParser());
 dotenv.config();
 
 connectDB();
-
-app.use(function (req, res, next) {
-  res.header("Content-Type", "application/json;charset=UTF-8");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
 
 app.use("/api/auth", require("./routers/auth.router"));
 app.use("/api/user", require("./routers/user.router.js"));

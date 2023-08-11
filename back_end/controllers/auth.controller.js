@@ -161,6 +161,7 @@ const auth = {
 
       const refreshToken = await auth.generateRefreshToken(user);
 
+      console.log(refreshToken);
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         path: "/",
