@@ -46,7 +46,10 @@ function Info({ room, roomActive, user, open, handleOpen, navigate, dispatch }) 
                 <span className=" text-xl text-white">...</span>
             </label>
             {room && room.length > 0 && (
-                <label htmlFor="info" className="info md:w-1/5 md:flex flex-col hidden overflow-hidden overflow-y-auto">
+                <label
+                    htmlFor="info"
+                    className="info md:w-1/5 md:min-w-[230px] md:flex flex-col hidden overflow-hidden overflow-y-auto"
+                >
                     <div className="flex flex-col items-center px-4 py-2 border-b-2 border-white-900">
                         {room[roomActive]?.avatar ? (
                             <img

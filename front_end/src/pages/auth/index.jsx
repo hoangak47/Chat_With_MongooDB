@@ -5,6 +5,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Layout from '~/components/Layout';
+import axiosJWT from '~/components/axios';
 import socket from '~/components/connnectSocket';
 import { loginRequest, registerRequest } from '~/redux/features/apiRequest';
 import { getChatSuccess } from '~/redux/features/roomSlice';
