@@ -58,7 +58,7 @@ export const loginRequest = async (data, dispatch, axios, navigate) => {
 export const logoutRequest = async (user, dispatch, axios, navigate) => {
     dispatch(logoutStart());
     try {
-        await axios.get(`/auth/logout`, {
+        await api.get(`/auth/logout`, {
             headers: {
                 token: `Bearer ${user.accessToken}`,
                 _id: user._id,
@@ -79,7 +79,7 @@ export const logoutRequest = async (user, dispatch, axios, navigate) => {
 export const registerRequest = async (data, dispatch, axios) => {
     dispatch(registerStart());
     try {
-        await axios.post('/auth/register', data);
+        await api.post('/auth/register', data);
         dispatch(registerSuccess());
 
         dispatch(setAuth(false));
@@ -92,7 +92,7 @@ export const registerRequest = async (data, dispatch, axios) => {
 export const getRoomsRequest = async (user, dispatch, axios, navigate) => {
     dispatch(getRoomsStart());
     try {
-        const response = await axios.get(`/room?_id=${user._id}`, {
+        const response = await api.get(`/room?_id=${user._id}`, {
             headers: {
                 token: `Bearer ${user.accessToken}`,
             },
@@ -118,7 +118,7 @@ export const getChatRequest = async (user, dispatch, axios, id, page = 1, chat) 
     dispatch(getChatStart());
 
     try {
-        const response = await axios.get(`/message/${id}?page=${page}`, {
+        const response = await api.get(`/message/${id}?page=${page}`, {
             headers: {
                 token: `Bearer ${user.accessToken}`,
                 _id: user._id,
@@ -149,7 +149,7 @@ export const getChatRequest = async (user, dispatch, axios, id, page = 1, chat) 
 export const sendMessageRequest = async (user, dispatch, data, id, axios) => {
     dispatch(sendMessageStart());
     try {
-        await axios.post(`/message/${id}`, data, {
+        await api.post(`/message/${id}`, data, {
             headers: {
                 token: `Bearer ${user.accessToken}`,
                 _id: user._id,
@@ -167,7 +167,7 @@ export const getProlifeRequest = async (_id, user_id, accessToken, axios, dispat
     dispatch(setProfileStart());
 
     try {
-        const response = await axios.get(`/user/${_id}`, {
+        const response = await api.get(`/user/${_id}`, {
             headers: {
                 token: `Bearer ${accessToken}`,
                 _id: user_id,
@@ -183,7 +183,7 @@ export const getProlifeRequest = async (_id, user_id, accessToken, axios, dispat
 export const changePasswordRequest = async (user, accessToken, dispatch, data, axios, setError, e) => {
     dispatch(setChangePasswordStart());
     try {
-        await axios.put(`/user/${user._id}`, data, {
+        await api.put(`/user/${user._id}`, data, {
             headers: {
                 token: `Bearer ${accessToken}`,
                 _id: user._id,
@@ -202,7 +202,7 @@ export const changePasswordRequest = async (user, accessToken, dispatch, data, a
 export const searchUserRequest = async (user, dispatch, data, axios) => {
     dispatch(getSearchStart());
     try {
-        const response = await axios.get(`/search?keyword=${data}`, {
+        const response = await api.get(`/search?keyword=${data}`, {
             headers: {
                 token: `Bearer ${user.accessToken}`,
                 _id: user._id,
@@ -219,7 +219,7 @@ export const searchUserRequest = async (user, dispatch, data, axios) => {
 
 export const uploadImageRoomRequest = async (user, room, roomActive, dispatch, data, axios) => {
     try {
-        const response = await axios.put(
+        const response = await api.put(
             `/room/${room[roomActive]?._id}`,
             {
                 avatar: data,
