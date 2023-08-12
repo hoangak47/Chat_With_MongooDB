@@ -35,7 +35,7 @@ import { getSearchFail, getSearchStart, getSearchSuccess } from './searchSlice';
 export const loginRequest = async (data, dispatch, axios, navigate) => {
     dispatch(loginStart());
     try {
-        const response = await axios.post('/api/auth/login', data, {
+        const response = await axios.post('api/auth/login', data, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -52,7 +52,7 @@ export const loginRequest = async (data, dispatch, axios, navigate) => {
 export const logoutRequest = async (user, dispatch, axios, navigate) => {
     dispatch(logoutStart());
     try {
-        await axios.get(`/api/auth/logout`, {
+        await axios.get(`api/auth/logout`, {
             headers: {
                 token: `Bearer ${user.accessToken}`,
                 _id: user._id,
@@ -73,7 +73,7 @@ export const logoutRequest = async (user, dispatch, axios, navigate) => {
 export const registerRequest = async (data, dispatch, axios) => {
     dispatch(registerStart());
     try {
-        await axios.post('/api/auth/register', data);
+        await axios.post('api/auth/register', data);
         dispatch(registerSuccess());
 
         dispatch(setAuth(false));
@@ -86,7 +86,7 @@ export const registerRequest = async (data, dispatch, axios) => {
 export const getRoomsRequest = async (user, dispatch, axios, navigate) => {
     dispatch(getRoomsStart());
     try {
-        const response = await axios.get(`/api/room?_id=${user._id}`, {
+        const response = await axios.get(`api/room?_id=${user._id}`, {
             headers: {
                 token: `Bearer ${user.accessToken}`,
             },
@@ -112,7 +112,7 @@ export const getChatRequest = async (user, dispatch, axios, id, page = 1, chat) 
     dispatch(getChatStart());
 
     try {
-        const response = await axios.get(`/api/message/${id}?page=${page}`, {
+        const response = await axios.get(`api/message/${id}?page=${page}`, {
             headers: {
                 token: `Bearer ${user.accessToken}`,
                 _id: user._id,
@@ -143,7 +143,7 @@ export const getChatRequest = async (user, dispatch, axios, id, page = 1, chat) 
 export const sendMessageRequest = async (user, dispatch, data, id, axios) => {
     dispatch(sendMessageStart());
     try {
-        await axios.post(`/api/message/${id}`, data, {
+        await axios.post(`api/message/${id}`, data, {
             headers: {
                 token: `Bearer ${user.accessToken}`,
                 _id: user._id,
@@ -161,7 +161,7 @@ export const getProlifeRequest = async (_id, user_id, accessToken, axios, dispat
     dispatch(setProfileStart());
 
     try {
-        const response = await axios.get(`/api/user/${_id}`, {
+        const response = await axios.get(`api/user/${_id}`, {
             headers: {
                 token: `Bearer ${accessToken}`,
                 _id: user_id,
@@ -177,7 +177,7 @@ export const getProlifeRequest = async (_id, user_id, accessToken, axios, dispat
 export const changePasswordRequest = async (user, accessToken, dispatch, data, axios, setError, e) => {
     dispatch(setChangePasswordStart());
     try {
-        await axios.put(`/api/user/${user._id}`, data, {
+        await axios.put(`api/user/${user._id}`, data, {
             headers: {
                 token: `Bearer ${accessToken}`,
                 _id: user._id,
@@ -196,7 +196,7 @@ export const changePasswordRequest = async (user, accessToken, dispatch, data, a
 export const searchUserRequest = async (user, dispatch, data, axios) => {
     dispatch(getSearchStart());
     try {
-        const response = await axios.get(`/api/search?keyword=${data}`, {
+        const response = await axios.get(`api/search?keyword=${data}`, {
             headers: {
                 token: `Bearer ${user.accessToken}`,
                 _id: user._id,
