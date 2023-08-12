@@ -16,13 +16,6 @@ function Login() {
 
     const auth = useSelector((state) => state.auth.auth);
 
-    const axiosJWT = axios.create({
-        baseURL: 'http://localhost:5000/',
-        withCredentials: true,
-        credentials: 'include',
-        headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
-    });
-
     const handleLogin = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
@@ -34,7 +27,7 @@ function Login() {
             email: data.email,
         });
 
-        loginRequest(data, dispatch, axiosJWT, navigate);
+        loginRequest(data, dispatch, axios, navigate);
     };
 
     const handleRegister = (e) => {

@@ -23,8 +23,14 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
     credentials: true,
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Access-Control-Allow-Origin",
+      "Access-Control-Allow-Credentials",
+    ],
+    origin: ["http://localhost:3000", "https://chat-with-mongoo-db.vercel.app"],
   })
 );
 

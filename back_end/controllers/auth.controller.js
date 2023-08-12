@@ -165,7 +165,7 @@ const auth = {
         httpOnly: true,
         path: "/",
         secure: true,
-        sameSite: "strict",
+        sameSite: "none",
       });
 
       const { password: hashedPassword, ...others } = user._doc;
