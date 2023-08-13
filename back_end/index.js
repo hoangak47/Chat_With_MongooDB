@@ -16,6 +16,7 @@ const io = new Server(server, {
   cors: {
     credentials: true,
     origin: true,
+    exposedHeaders: ["set-cookie"],
   },
 });
 
@@ -23,14 +24,9 @@ app.use(express.json());
 
 app.use(
   cors({
+    origin: true,
     credentials: true,
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Access-Control-Allow-Origin",
-      "Access-Control-Allow-Credentials",
-    ],
-    origin: ["http://localhost:3000", "https://chat-with-mongoo-db.vercel.app"],
+    exposedHeaders: ["set-cookie"],
   })
 );
 

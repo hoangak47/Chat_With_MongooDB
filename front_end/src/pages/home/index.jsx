@@ -14,6 +14,7 @@ import Room from './room';
 import Message from './message';
 import Info from './infoChat';
 import socket from '~/components/connnectSocket';
+import axiosJWT from '~/components/axios';
 
 function Home() {
     const room = useSelector((state) => state?.room?.rooms?.data);
@@ -36,9 +37,11 @@ function Home() {
         });
     }, [chat.data]);
 
+    let axiosJWT_ = axiosJWT(user, dispatch);
+
     React.useEffect(() => {
         if (user) {
-            getRoomsRequest(user, dispatch, axios, navigate);
+            getRoomsRequest(user, dispatch, axiosJWT_, navigate);
             dispatch(getChatSuccess([]));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,7 +53,7 @@ function Home() {
         if (!room) return;
         if (room.length === 0) return;
         if (user) {
-            getChatRequest(user, dispatch, axios, room[roomActive]?._id);
+            getChatRequest(user, dispatch, axiosJWT_, room[roomActive]?._id);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roomActive]);
@@ -74,7 +77,7 @@ function Home() {
         if (!chat?.data) return;
         if (!user) return;
 
-        getChatRequest(user, dispatch, axios, room[roomActive]?._id, page, chat);
+        getChatRequest(user, dispatch, axiosJWT_, room[roomActive]?._id, page, chat);
     }, [page]);
 
     React.useEffect(() => {

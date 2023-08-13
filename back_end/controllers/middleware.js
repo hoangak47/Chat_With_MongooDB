@@ -1,4 +1,7 @@
 const jwt = require("jsonwebtoken");
+const Token = require("../models/Token");
+
+let token = null;
 
 const middleware = {
   checkToken: async (req, res, next) => {
@@ -11,8 +14,10 @@ const middleware = {
         ? req.body
         : req.query;
 
+      token = await Token.findOne({ _id });
+
       const accessToken = req.headers["token"].split(" ")[1];
-      const { refreshToken } = req.cookies;
+      const refreshToken = token.refreshToken;
 
       if (!accessToken || !refreshToken) {
         return res.status(400).json({ msg: "Please login first." });
@@ -38,10 +43,32 @@ const middleware = {
 
       next();
     } catch (error) {
-      return res.status(500).json({
-        msg: "Token expired",
-        navigate: "/auth",
-      });
+      const refreshToken = token.refreshToken;
+
+      await jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET,
+        async (err, decoded) => {
+          if (err) {
+            return res.status(500).json({
+              msg: "Please login again.",
+              navigate: "/auth",
+              error,
+            });
+          }
+
+          //refresh_token
+          if (req.path === "/refresh_token") {
+            next();
+          } else {
+            return res.status(500).json({
+              msg: "Token expired",
+              navigate: "/auth",
+              error,
+            });
+          }
+        }
+      );
     }
   },
 };

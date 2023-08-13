@@ -89,10 +89,11 @@ export const registerRequest = async (data, dispatch, axios) => {
     }
 };
 
-export const getRoomsRequest = async (user, dispatch, axios, navigate) => {
+export const getRoomsRequest = async (user, dispatch, axiosJWT, navigate) => {
     dispatch(getRoomsStart());
+    console.log(user);
     try {
-        const response = await api.get(`/room?_id=${user._id}`, {
+        const response = await axiosJWT.get(`/room?_id=${user._id}`, {
             headers: {
                 token: `Bearer ${user.accessToken}`,
             },
@@ -107,18 +108,18 @@ export const getRoomsRequest = async (user, dispatch, axios, navigate) => {
             navigate(`/room/${response.data[0]?._id}`);
         }
         dispatch(getRoomsSuccess(response.data));
-        getChatRequest(user, dispatch, axios, response.data[0]?._id);
+        getChatRequest(user, dispatch, axiosJWT, response.data[0]?._id);
     } catch (error) {
         message.error(error.response.data.msg);
         dispatch(getRoomsFail([]));
     }
 };
 
-export const getChatRequest = async (user, dispatch, axios, id, page = 1, chat) => {
+export const getChatRequest = async (user, dispatch, axiosJWT, id, page = 1, chat) => {
     dispatch(getChatStart());
 
     try {
-        const response = await api.get(`/message/${id}?page=${page}`, {
+        const response = await axiosJWT.get(`/message/${id}?page=${page}`, {
             headers: {
                 token: `Bearer ${user.accessToken}`,
                 _id: user._id,
@@ -146,7 +147,7 @@ export const getChatRequest = async (user, dispatch, axios, id, page = 1, chat) 
     }
 };
 
-export const sendMessageRequest = async (user, dispatch, data, id, axios) => {
+export const sendMessageRequest = async (user, dispatch, data, id, axiosJWT) => {
     dispatch(sendMessageStart());
     try {
         await api.post(`/message/${id}`, data, {
@@ -163,11 +164,11 @@ export const sendMessageRequest = async (user, dispatch, data, id, axios) => {
     }
 };
 
-export const getProlifeRequest = async (_id, user_id, accessToken, axios, dispatch) => {
+export const getProlifeRequest = async (_id, user_id, accessToken, axiosJWT, dispatch) => {
     dispatch(setProfileStart());
 
     try {
-        const response = await api.get(`/user/${_id}`, {
+        const response = await axiosJWT.get(`/user/${_id}`, {
             headers: {
                 token: `Bearer ${accessToken}`,
                 _id: user_id,

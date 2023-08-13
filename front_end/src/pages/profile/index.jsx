@@ -4,21 +4,25 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import Layout from '~/components/Layout';
+import axiosJWT from '~/components/axios';
 import textAvatar from '~/components/textAvatar';
 import { changePasswordRequest, getProlifeRequest } from '~/redux/features/apiRequest';
 
 function Profile() {
     const location = useLocation();
     const dispatch = useDispatch();
-    // const user = useSelector((state) => state?.auth?.login?.data);
+    const user_ = useSelector((state) => state?.auth?.login?.data);
 
     const _id = location?.state?._id;
     const user_id = location?.state?.user_id;
     const accessToken = location?.state?.accessToken;
 
     const user = useSelector((state) => state?.user?.profile?.data);
+
+    let axiosJWT_ = axiosJWT(user_, dispatch);
+
     React.useEffect(() => {
-        getProlifeRequest(_id, user_id, accessToken, axios, dispatch);
+        getProlifeRequest(_id, user_id, accessToken, axiosJWT_, dispatch);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [_id]);
 

@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Room = require("../models/Room");
 
+const Token = require("../models/Token");
+
 const auth = {
   register: async (req, res) => {
     try {
@@ -43,6 +45,13 @@ const auth = {
       });
       await newUser.save();
 
+      const token = new Token({
+        _id: newUser._id,
+        refreshToken: null,
+      });
+
+      await token.save();
+
       await Room.findByIdAndUpdate("64c92c5e5023b05bbc05563e", {
         $push: {
           members: newUser._id,
@@ -63,7 +72,7 @@ const auth = {
       },
       process.env.ACCESS_TOKEN_SECRET,
       {
-        expiresIn: 60 * 60,
+        expiresIn: 60 * 5,
       }
     );
   },
@@ -161,14 +170,11 @@ const auth = {
 
       const refreshToken = await auth.generateRefreshToken(user);
 
-      res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        path: "/",
-        secure: true,
-        sameSite: "none",
-      });
-
       const { password: hashedPassword, ...others } = user._doc;
+
+      await Token.findByIdAndUpdate(others._id, {
+        refreshToken,
+      });
 
       return res.status(200).json({
         ...others,
@@ -180,11 +186,8 @@ const auth = {
   },
   logout: async (req, res) => {
     try {
-      res.clearCookie("refreshToken", {
-        httpOnly: true,
-        path: "/",
-        secure: false,
-        sameSite: "strict",
+      await Token.findByIdAndUpdate(req?.headers?._id, {
+        refreshToken: null,
       });
 
       return res.json({
@@ -196,7 +199,9 @@ const auth = {
   },
   refreshToken: async (req, res) => {
     try {
-      const { refreshToken } = req.cookies;
+      const getRefreshToken = await Token.findOne({ _id: req?.headers?._id });
+
+      const refreshToken = getRefreshToken.refreshToken;
 
       const decoded = await jwt.verify(
         refreshToken,
@@ -206,11 +211,8 @@ const auth = {
       const accessToken = await auth.generateAccessToken(decoded);
       const newRefreshToken = await auth.generateRefreshToken(decoded);
 
-      res.cookie("refreshToken", newRefreshToken, {
-        httpOnly: true,
-        path: "/",
-        secure: false,
-        sameSite: "strict",
+      await Token.findByIdAndUpdate(decoded._id, {
+        refreshToken: newRefreshToken,
       });
 
       return res.status(200).json({ accessToken });
@@ -221,7 +223,5 @@ const auth = {
     }
   },
 };
-
-auth.generateKeywords("Nguyen Van A");
 
 module.exports = auth;
