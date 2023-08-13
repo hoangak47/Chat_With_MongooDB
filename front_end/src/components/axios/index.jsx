@@ -4,7 +4,7 @@ import { loginSuccess } from '~/redux/features/authSlice';
 
 function axiosJWT(user, dispatch) {
     const axiosJWT = axios.create({
-        baseURL: 'http://localhost:5000/api',
+        baseURL: 'https://chat-with-mongoo-db-l2fr.vercel.app/api',
         withCredentials: true,
     });
 
@@ -14,7 +14,7 @@ function axiosJWT(user, dispatch) {
             const decodedToken = jwtDecode(user?.accessToken);
 
             if (decodedToken.exp < date.getTime() / 1000) {
-                const response = await axios.get('http://localhost:5000/api/auth/refresh_token', {
+                const response = await axios.get('https://chat-with-mongoo-db-l2fr.vercel.app/api/auth/refresh_token', {
                     headers: {
                         token: `Bearer ${user.accessToken}`,
                         _id: user._id,

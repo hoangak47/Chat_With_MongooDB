@@ -35,7 +35,7 @@ import { getSearchFail, getSearchStart, getSearchSuccess } from './searchSlice';
 export const loginRequest = async (data, dispatch, axios, navigate) => {
     dispatch(loginStart());
     try {
-        const response = await axios.post('http://localhost:5000/api/auth/login', data, {
+        const response = await axios.post('https://chat-with-mongoo-db-l2fr.vercel.app/api/auth/login', data, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -73,7 +73,7 @@ export const logoutRequest = async (user, dispatch, axios, navigate) => {
 export const registerRequest = async (data, dispatch, axios) => {
     dispatch(registerStart());
     try {
-        await axios.post('http://localhost:5000/api/auth/register', data);
+        await axios.post('https://chat-with-mongoo-db-l2fr.vercel.app/api/auth/register', data);
         dispatch(registerSuccess());
 
         dispatch(setAuth(false));
