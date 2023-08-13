@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import socketIOClient from 'socket.io-client';
 
-const host = 'http://localhost:5000';
+const host = 'https://chat-with-mongoo-db-l2fr.vercel.app';
 
 function Home() {
     const [mess, setMess] = useState([]);
