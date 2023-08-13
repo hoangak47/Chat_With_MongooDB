@@ -1,29 +1,60 @@
-var express = require("express");
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
+const connectDB = require("./utils/connectDB");
 const http = require("http");
-var app = express();
+const socket_ = require("./utils/socket.io");
+
+const app = express();
+
 const server = http.createServer(app);
 
-const socketIo = require("socket.io")(server, {
+const { Server } = require("socket.io");
+
+const io = new Server(server, {
   cors: {
-    origin: "*",
+    credentials: true,
+    origin: true,
+    exposedHeaders: ["set-cookie"],
   },
 });
-// nhớ thêm cái cors này để tránh bị Exception nhé :D  ở đây mình làm nhanh nên cho phép tất cả các trang đều cors được.
 
-socketIo.on("connection", (socket) => {
-  ///Handle khi có connect từ client tới
-  console.log("New client connected" + socket.id);
+app.use(express.json());
 
-  socket.on("sendDataClient", function (data) {
-    // Handle khi có sự kiện tên là sendDataClient từ phía client
-    socketIo.emit("sendDataServer", { data }); // phát sự kiện  có tên sendDataServer cùng với dữ liệu tin nhắn từ phía server
-  });
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+    exposedHeaders: ["set-cookie"],
+  })
+);
 
-  socket.on("disconnect", () => {
-    console.log("Client disconnected"); // Khi client disconnect thì log ra terminal.
+app.use(cookieParser());
+dotenv.config();
+
+connectDB();
+
+app.use("/api/auth", require("./routers/auth.router"));
+app.use("/api/user", require("./routers/user.router.js"));
+app.use("/api/room", require("./routers/room.router.js"));
+app.use("/api/message", require("./routers/message.router.js"));
+app.use("/api/search", require("./routers/search.router.js"));
+
+socket_(io);
+
+app.use((req, res, next) => {
+  const error = new Error("Not found");
+  error.status = 404;
+  next(error);
+});
+
+app.use((error, req, res, next) => {
+  res.status(error.status || 500).send({
+    message: error.message,
   });
 });
 
 server.listen(5000, () => {
-  console.log("Server đang chay tren cong 5000");
+  console.log("Server is running on port 5000");
 });
