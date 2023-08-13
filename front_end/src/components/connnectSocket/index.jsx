@@ -6,7 +6,7 @@
 
 import socketIOClient from 'socket.io-client';
 
-const host = 'https://chat-with-mongoo-db-l2fr.vercel.app/';
+const host = 'localhost:5000';
 
 const socket = socketIOClient.connect(host);
 
