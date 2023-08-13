@@ -10,26 +10,15 @@ const app = express();
 
 const server = http.createServer(app);
 
-const { Server } = require("socket.io");
-
-const io = new Server(server, {
-  path: "/socket.io",
+const io = require("socket.io")(server, {
   cors: {
-    credentials: true,
-    origin: true,
-    exposedHeaders: ["set-cookie"],
+    origin: "*",
   },
 });
 
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: true,
-    credentials: true,
-    exposedHeaders: ["set-cookie"],
-  })
-);
+app.use(cors());
 
 app.use(cookieParser());
 dotenv.config();
