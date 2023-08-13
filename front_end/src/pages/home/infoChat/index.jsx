@@ -11,6 +11,7 @@ import { message } from 'antd';
 import axios from 'axios';
 import React, { Fragment } from 'react';
 import { SVGArrow, SVGChangeImage, SVGMessenger, SVGPencil, SVGUser } from '~/assets/svg';
+import axiosJWT from '~/components/axios';
 import socket from '~/components/connnectSocket';
 import resizeFile from '~/components/resizeFile';
 import textAvatar from '~/components/textAvatar';
@@ -29,9 +30,11 @@ function Info({ room, roomActive, user, open, handleOpen, navigate, dispatch }) 
         }
     };
 
+    let axiosJWT_ = axiosJWT(user, dispatch);
+
     React.useEffect(() => {
         socket.on('updateRoom', (data) => {
-            getRoomsRequest(user, dispatch, axios);
+            getRoomsRequest(user, dispatch, axiosJWT_);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [room]);
