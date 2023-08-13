@@ -170,7 +170,7 @@ const auth = {
 
       const refreshToken = await auth.generateRefreshToken(user);
 
-      const { password: hashedPassword, ...others } = user._doc;
+      const { password: hashedPassword, keyword, ...others } = user._doc;
 
       await Token.findByIdAndUpdate(others._id, {
         refreshToken,

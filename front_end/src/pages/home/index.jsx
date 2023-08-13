@@ -26,6 +26,8 @@ function Home() {
 
     const chat_end = React.useRef(null);
 
+    let axiosJWT_ = axiosJWT(user, dispatch);
+
     React.useEffect(() => {
         socket.on('timeRoom', (data) => {
             dispatch(getRoomsSuccess(room.map((item) => (item._id === data._id ? data : item))));
@@ -36,8 +38,6 @@ function Home() {
             chat_end?.current?.scrollIntoView({ behavior: 'smooth' });
         });
     }, [chat.data]);
-
-    let axiosJWT_ = axiosJWT(user, dispatch);
 
     React.useEffect(() => {
         if (user) {
@@ -104,7 +104,7 @@ function Home() {
 
     React.useEffect(() => {
         if (debounceKeyword) {
-            searchUserRequest(user, dispatch, debounceKeyword, axios);
+            searchUserRequest(user, dispatch, debounceKeyword, axiosJWT_);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debounceKeyword]);

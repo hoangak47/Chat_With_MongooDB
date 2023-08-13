@@ -17,7 +17,7 @@ const middleware = {
       token = await Token.findOne({ _id });
 
       const accessToken = req.headers["token"].split(" ")[1];
-      const refreshToken = token.refreshToken;
+      const refreshToken = token?.refreshToken;
 
       if (!accessToken || !refreshToken) {
         return res.status(400).json({ msg: "Please login first." });
@@ -43,7 +43,7 @@ const middleware = {
 
       next();
     } catch (error) {
-      const refreshToken = token.refreshToken;
+      const refreshToken = token?.refreshToken;
 
       await jwt.verify(
         refreshToken,

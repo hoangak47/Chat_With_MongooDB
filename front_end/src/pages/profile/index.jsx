@@ -42,7 +42,7 @@ function Profile() {
             return (e.target.childNodes[3].childNodes[2].innerText = 'Password and confirm password must be the same');
         }
 
-        changePasswordRequest(user, accessToken, dispatch, data, axios, setError, e.target);
+        changePasswordRequest(user, accessToken, dispatch, data, axiosJWT_, setError, e.target);
     };
 
     return (

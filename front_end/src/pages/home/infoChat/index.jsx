@@ -18,19 +18,18 @@ import textAvatar from '~/components/textAvatar';
 import { getRoomsRequest, uploadImageRoomRequest } from '~/redux/features/apiRequest';
 
 function Info({ room, roomActive, user, open, handleOpen, navigate, dispatch }) {
+    let axiosJWT_ = axiosJWT(user, dispatch);
     const handleUploadImage = async (e) => {
         try {
             const file = e.target.files[0];
             const image = await resizeFile(file);
-            await uploadImageRoomRequest(user, room, roomActive, dispatch, image, axios);
+            await uploadImageRoomRequest(user, room, roomActive, dispatch, image, axiosJWT_);
 
             e.target.value = '';
         } catch (error) {
             message.error("Error: Can't upload image");
         }
     };
-
-    let axiosJWT_ = axiosJWT(user, dispatch);
 
     React.useEffect(() => {
         socket.on('updateRoom', (data) => {
