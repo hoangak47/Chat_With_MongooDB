@@ -2,22 +2,15 @@ import { useSelector } from 'react-redux';
 import { SVGSend } from '~/assets/svg';
 
 import React from 'react';
-// import socket from '../connnectSocket';
-
-import socketIOClient from 'socket.io-client';
-
-const host = 'http://localhost:5000';
+import socket from '../connnectSocket';
 
 function Chat() {
     const user = useSelector((state) => state?.auth?.login?.data);
     const chat = useSelector((state) => state?.room?.chat?.data);
     // const dispatch = useDispatch();
 
-    const socketRef = React.useRef();
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        socketRef.current = socketIOClient.connect(host);
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData);
 
@@ -27,7 +20,7 @@ function Chat() {
             return;
         }
 
-        await socketRef.current.emit('sendDataClient', {
+        await socket.emit('sendDataClient', {
             msg: data.msg,
             sender: user._id,
             room: id,
@@ -36,7 +29,7 @@ function Chat() {
             data: chat,
         });
 
-        await socketRef.current.emit('timeRoom', id);
+        await socket.emit('timeRoom', id);
 
         e.target.reset();
     };
